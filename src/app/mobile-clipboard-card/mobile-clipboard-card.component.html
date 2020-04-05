@@ -1,0 +1,5 @@
+<mat-card *ngFor="let data of clipboardDataArr" style="margin: 2% 0%">
+    <div (click)="openDialog(data)">
+        {{data.displayMessage}}
+    </div>
+</mat-card>

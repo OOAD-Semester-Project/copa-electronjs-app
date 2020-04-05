@@ -1,0 +1,13 @@
+<mat-card *ngFor="let data of clipboardDataArr" style="margin: 2% 0%">
+    <div (click)="openDialog(data)">
+        {{data.displayMessage}}
+    </div>
+    <!-- <div>
+        {{new Date(data.timestamp)}}
+    </div> -->
+</mat-card>
+  
+  
+  <!-- Copyright 2019 Google LLC. All Rights Reserved.
+      Use of this source code is governed by an MIT-style license that
+      can be found in the LICENSE file at http://angular.io/license -->
