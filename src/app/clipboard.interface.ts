@@ -1,10 +1,10 @@
 
 export interface ClipboardData {
     _id: string;
-    user: string;
+    userId: string;
     from: string;
     timestamp: string;
-    message: string;
+    clipboardText: string;
     displayMessage: string;
   }
   

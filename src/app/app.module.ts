@@ -11,7 +11,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
 import {DemoMaterialModule} from './materials-module';
 import { HeaderComponent } from './header/header.component';
-import { ClipboardCardComponent } from './clipboard-card/clipboard-card.component';
+import { DesktopClipboardCardComponent } from './desktop-clipboard-card/desktop-clipboard-card.component';
 import { MobileClipboardCardComponent } from './mobile-clipboard-card/mobile-clipboard-card.component';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogOverviewComponent } from './dialog-overview/dialog-overview.component';
@@ -23,7 +23,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
   declarations: [
     AppComponent,
     HeaderComponent,
-    ClipboardCardComponent,
+    DesktopClipboardCardComponent,
     MobileClipboardCardComponent,
     DialogOverviewComponent
   ],

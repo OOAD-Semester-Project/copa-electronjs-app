@@ -2,19 +2,19 @@
 // // code. You can also put them in separate files and require them here.
 
 
-const { clipboard } = require('electron')
-// const clipboard = require('electron-clipboard-extended')
-const socketUrl = 'ws://34.94.157.63:3000/desktopClient'
+const { clipboard, session } = require('electron')
+const socketUrl = "http://localhost:3000/"
+const socket = require('socket.io-client')(socketUrl);
+
+socket.on('connect', function(){
+  console.log("Socket connected");
+});
 const {app, BrowserWindow} = require('electron')
     const url = require("url");
     const path = require("path");
 
     let mainWindow;
     let previousText = "";
-
-    const WebSocket = require('ws');
-
-    const ws = new WebSocket(socketUrl);
 
     function createWindow () {
       mainWindow = new BrowserWindow({
@@ -27,43 +27,31 @@ const {app, BrowserWindow} = require('electron')
         // show: false
       })
       console.log("directory: "+__dirname)
-      mainWindow.loadURL(
-        
+      mainWindow.loadURL(        
         url.format({          
           pathname: path.join(__dirname, `dist/index.html`),
           protocol: "file:",
           slashes: true
         })
       );
-      // ws.open()
-      ws.on('open', function open() {
-        // ws.send('something');
-        
-        setInterval(function(){ 
-          text = clipboard.readText();
-          let timestamp = Date.now();
-          if(text !== previousText) { 
-            previousText = text;
-            console.log("Text: "+text);
-            clipboardData = {
-              timestamp: timestamp,
-              message: text,
-              user: "adam",
-              from: "desktop"
-            }
-            ws.send(JSON.stringify(clipboardData));          
-          } else {
-            previousText = text;
+
+      setInterval(function(){ 
+        text = clipboard.readText();
+        let timestamp = Date.now();
+        if(text !== previousText) { 
+          previousText = text;
+          console.log("Text: "+text);
+          clipboardData = {
+            timestamp: timestamp,
+            clipboardText: text,
+            userId: "adam@gmail.com",
+            from: "desktop"
           }
-        }, 100);
-      });
-
-      ws.on('message', function incoming(data) {
-        clipboard.writeText(data);
-        console.log("Message from websocket: "+data);
-      });
-
-      
+          socket.emit("desktopClient", clipboardData);
+        } else {
+          previousText = text;
+        }
+      }, 100);
 
       // Open the DevTools.
       mainWindow.webContents.openDevTools()

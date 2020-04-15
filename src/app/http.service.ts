@@ -26,25 +26,18 @@ export class HttpService {
     private router: Router,
     private route: ActivatedRoute) {}
 
-  getRequest() {
-    let url: string = "http://34.94.157.63:3000/clips/adam";
+  // getRequest() {
+  //   let url: string = "http://localhost:3000/clips/"+;
+  //   return this.http.get(url);
+  // }
+
+  getAllClips() {
+    let userId = "adam@gmail.com";
+    let url: string = "http://localhost:3000/clips/"+userId;
     return this.http.get(url);
   }
-
-  // getVoucherRequest(url: string, queryParams: {}) {
-  //   console.log("get voucher request", queryParams);
-  //   return this.http.get(url, queryParams);
-  // }
 
   postRequest(url: string, reqBody: any) {
     return this.http.post(url, reqBody);
   }
-
-  // login(reqBody: any) {
-  //   //console.log("ssss")
-  //   console.log(reqBody['qrcode']);
-  //   const headers = new Headers({'Content-Type':'application/json'});
-  //   return this.http.post(LOGIN_AUTH, reqBody['qrcode'], {headers: new HttpHeaders().set('Content-Type', 'application/json')});
-  // }
-
 }

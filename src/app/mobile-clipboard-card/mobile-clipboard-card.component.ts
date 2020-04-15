@@ -1,5 +1,5 @@
 
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { HttpService } from '../http.service';
 import { ClipboardData } from '../clipboard.interface';
@@ -15,47 +15,33 @@ import { DialogOverviewComponent } from '../dialog-overview/dialog-overview.comp
   templateUrl: './mobile-clipboard-card.component.html',
   styleUrls: ['./mobile-clipboard-card.component.css']
 })
-export class MobileClipboardCardComponent {
+export class MobileClipboardCardComponent implements OnInit{
 
   clipboardDataArr: ClipboardData[];
   constructor(public dialog: MatDialog, 
     private httpService: HttpService, 
-    private socketService: SocketService) {
+    private socketService: SocketService) { }
 
-    // let url: string = "http://34.94.157.63:3000/clips/adam";
-    // let url: string = "http://5e51a1f8f2c0d300147c08e9.mockapi.io/temp-api-3";
-    // this.socketService.getHorseData({"a":"b"}).subscribe((data: ClipboardData[]) => {
-    //   console.log(data);
-    //   // this.clipboardDataArr = data.filter(i => i.from === "mobile");;
-    //   // this.clipboardDataArr.forEach(data => {
-    //   //   if(data["message"].length>=30) {
-    //   //     data["displayMessage"] = data["message"].substring(0,30)+"......"
-    //   //   } else {
-    //   //     data["displayMessage"] = data["message"]
-    //   //   }
-    //   // })
-    // }, (error) => {
-    //   console.error(error);
-    // })
-
-    setInterval(() => {
-      this.httpService.getRequest().subscribe((data: ClipboardData[]) => {
-        // console.log(data);
+  ngOnInit(): void {
+    this.httpService.getAllClips().subscribe((data: ClipboardData[]) => {
+      console.log(data);
+      if(data.length != 0){
         this.clipboardDataArr = data.filter(i => i.from === "mobile");
         this.clipboardDataArr.forEach(data => {
           // data["timestamp"] = new Date(data["timestamp"])
-          if(data["message"].length>=30) {
-            data["displayMessage"] = data["message"].substring(0,30)+"......"
+          if(data["clipboardText"].length>=30) {
+            data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
           } else {
-            data["displayMessage"] = data["message"]
+            data["displayMessage"] = data["clipboardText"]
           }
-        })
-        
-        this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1)
-        
-      });
-    }, 1000);
-    
+        });      
+        this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
+      }           
+    });
+
+    this.socketService.getClips().subscribe(data => {
+      this.clipboardDataArr.push(data["clipboardText"]);
+    })
   }
 
   openDialog(data): void {
@@ -70,25 +56,6 @@ export class MobileClipboardCardComponent {
   }
 
 }
-
-// @Component({
-//   selector: 'dialog-overview-example-dialog',
-//   templateUrl: 'dialog-overview-example-dialog.html',
-// })
-// export class DialogOverviewExampleDialog {
-
-//   constructor(
-//     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-//     @Inject(MAT_DIALOG_DATA) public data: ClipboardData) {
-//       console.log("Data: "+JSON.stringify(data));
-//     }
-
-//   onNoClick(): void {
-//     this.dialogRef.close();
-//   }
-
-// }
-
 
 /**  Copyright 2019 Google LLC. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that
