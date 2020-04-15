@@ -20,6 +20,7 @@ export class SocketService {
     let observable = new Observable(observer => {
       this.socket = io(this.socketUrl);
       this.socket.on('newData', (data) => {
+        console.log("Got new data", data);
         observer.next(data);    
       });
       return () => {

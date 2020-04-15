@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IpcService } from './ipc.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'copa-electron';
+
+  constructor(private readonly _ipc: IpcService) {
+    this._ipc.on('pong', (event: Electron.IpcMessageEvent) => {
+      console.log('pong');
+    });
+
+    this._ipc.send('ping');
+  }
 }

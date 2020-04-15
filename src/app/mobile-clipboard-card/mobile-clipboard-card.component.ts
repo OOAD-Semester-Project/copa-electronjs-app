@@ -11,48 +11,64 @@ import { DialogOverviewComponent } from '../dialog-overview/dialog-overview.comp
  * @title Dialog Overview
  */
 @Component({
-  selector: 'app-mobile-clipboard-card',
-  templateUrl: './mobile-clipboard-card.component.html',
-  styleUrls: ['./mobile-clipboard-card.component.css']
+    selector: 'app-mobile-clipboard-card',
+    templateUrl: './mobile-clipboard-card.component.html',
+    styleUrls: ['./mobile-clipboard-card.component.css']
 })
 export class MobileClipboardCardComponent implements OnInit{
-
   clipboardDataArr: ClipboardData[];
   constructor(public dialog: MatDialog, 
-    private httpService: HttpService, 
-    private socketService: SocketService) { }
+  private httpService: HttpService, 
+  private socketService: SocketService) { }
+
+  addToClipboardArr(data: ClipboardData) {
+    if(data != undefined) {
+      if (data["from"] == "desktop"){
+        return
+      }
+      if(data["clipboardText"].length>=30) {
+      data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
+      } else {
+      data["displayMessage"] = data["clipboardText"]
+      }
+      console.log("Desktop component: ", data);
+      this.clipboardDataArr.push(data);
+      this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
+    }
+  }
 
   ngOnInit(): void {
     this.httpService.getAllClips().subscribe((data: ClipboardData[]) => {
       console.log(data);
       if(data.length != 0){
-        this.clipboardDataArr = data.filter(i => i.from === "mobile");
-        this.clipboardDataArr.forEach(data => {
+      this.clipboardDataArr = data.filter(i => i.from === "mobile");
+      this.clipboardDataArr.forEach(data => {
           // data["timestamp"] = new Date(data["timestamp"])
           if(data["clipboardText"].length>=30) {
-            data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
+          data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
           } else {
-            data["displayMessage"] = data["clipboardText"]
+          data["displayMessage"] = data["clipboardText"]
           }
-        });      
-        this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
+      });      
+      this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
       }           
     });
 
-    this.socketService.getClips().subscribe(data => {
-      this.clipboardDataArr.push(data["clipboardText"]);
+    this.socketService.getClips().subscribe((data: ClipboardData) => {
+      console.log("New data in mobile component: ", data);
+      this.addToClipboardArr(data);
     })
   }
 
   openDialog(data): void {
-    const dialogRef = this.dialog.open(DialogOverviewComponent, {
-      width: '350px',
-      data: data
-    });
+  const dialogRef = this.dialog.open(DialogOverviewComponent, {
+    width: '350px',
+    data: data
+  });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed');
+  });
   }
 
 }

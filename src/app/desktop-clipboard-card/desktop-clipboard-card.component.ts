@@ -6,6 +6,7 @@ import { ClipboardData } from '../clipboard.interface';
 import { SocketService } from '../socket.service';
 import { DialogOverviewComponent } from '../dialog-overview/dialog-overview.component';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { CommentStmt } from '@angular/compiler';
 
 /**
  * @title Dialog Overview
@@ -23,9 +24,25 @@ export class DesktopClipboardCardComponent implements OnInit{
     private httpService: HttpService,
     private socketService: SocketService) {
   }
+
+  addToClipboardArr(data: ClipboardData) {
+    if(data != undefined) {
+      if (data["from"] == "mobile"){
+        return
+      }
+      if(data["clipboardText"].length>=30) {
+      data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
+      } else {
+      data["displayMessage"] = data["clipboardText"]
+      }
+      console.log("Desktop component: ", data);
+      this.clipboardDataArr.push(data);
+      this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
+    }
+  }
   ngOnInit(): void {
     this.httpService.getAllClips().subscribe((data: ClipboardData[]) => {
-      // console.log(data);
+      console.log("Data: ", data);
       if(data.length != 0){
         this.clipboardDataArr = data.filter(i => i.from === "desktop");
         this.clipboardDataArr.forEach(data => {
@@ -40,12 +57,12 @@ export class DesktopClipboardCardComponent implements OnInit{
       }       
     });
     
-    this.socketService.getClips().subscribe(data => {
-      this.clipboardDataArr.push(data["clipboardText"]);
+    this.socketService.getClips().subscribe((data: ClipboardData) => {
+      this.addToClipboardArr(data);
     })
   }
   
-  openDialog(data): void {
+  openDialog(data): void {    
     const dialogRef = this.dialog.open(DialogOverviewComponent, {
       width: '550px',
       data: data
@@ -54,6 +71,7 @@ export class DesktopClipboardCardComponent implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+
   }
 
 }

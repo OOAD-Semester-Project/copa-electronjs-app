@@ -5,6 +5,6 @@ export interface ClipboardData {
     from: string;
     timestamp: string;
     clipboardText: string;
-    displayMessage: string;
+    // displayMessage: string;
   }
   
