@@ -6,9 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  private logoutUrl: string = "#";
+  private headerText: string = "Copy Once Paste Anywhere";
 
   constructor() { }
 
   ngOnInit(): void {
   }
+
+  public logout(): void {
+    console.log("Logged out");
+  }
+
+  public get getHeaderText(): string {
+    return this.headerText;
+  }
+
 }

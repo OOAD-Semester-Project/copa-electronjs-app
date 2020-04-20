@@ -17,8 +17,12 @@ import { CommentStmt } from '@angular/compiler';
     styleUrls: ['./desktop-clipboard-card.component.css']
 })
 export class DesktopClipboardCardComponent implements OnInit{
-  clipboardDataArr: ClipboardData[];
-  data: ClipboardData;
+  private _clipboardDataArr: ClipboardData[] = [];
+  private _data: ClipboardData;
+
+  public get clipboardDataArr(): ClipboardData[] {
+    return this._clipboardDataArr;
+  }
 
   constructor(public dialog: MatDialog, 
     private httpService: HttpService,
@@ -27,34 +31,24 @@ export class DesktopClipboardCardComponent implements OnInit{
 
   addToClipboardArr(data: ClipboardData) {
     if(data != undefined) {
-      if (data["from"] == "mobile"){
-        return
-      }
-      if(data["clipboardText"].length>=30) {
-      data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
-      } else {
-      data["displayMessage"] = data["clipboardText"]
-      }
-      console.log("Desktop component: ", data);
-      this.clipboardDataArr.push(data);
-      this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
+      if (data["fromType"] !== "mobile"){
+        if(data["clipboardText"].length>=30) {
+          data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
+        } else {
+          data["displayMessage"] = data["clipboardText"]
+        }
+        console.log("Desktop component: ", data);
+        this._clipboardDataArr.push(data);
+        this._clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
+      }      
     }
   }
   ngOnInit(): void {
     this.httpService.getAllClips().subscribe((data: ClipboardData[]) => {
       console.log("Data: ", data);
-      if(data.length != 0){
-        this.clipboardDataArr = data.filter(i => i.from === "desktop");
-        this.clipboardDataArr.forEach(data => {
-          // data["timestamp"] = new Date(data["timestamp"])
-          if(data["clipboardText"].length>=30) {
-            data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
-          } else {
-            data["displayMessage"] = data["clipboardText"]
-          }
-        });      
-        this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
-      }       
+      data.forEach((d: ClipboardData) => {
+        this.addToClipboardArr(d);
+      })      
     });
     
     this.socketService.getClips().subscribe((data: ClipboardData) => {
@@ -75,22 +69,6 @@ export class DesktopClipboardCardComponent implements OnInit{
   }
 
 }
-
-// @Component({
-//   selector: 'dialog-overview-example-dialog',
-//   templateUrl: 'dialog-overview-example-dialog.html',
-// })
-// export class DialogOverviewExampleDialog {
-
-//   constructor(
-//     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-//     @Inject(MAT_DIALOG_DATA) public data: ClipboardData) {}
-
-//   onNoClick(): void {
-//     this.dialogRef.close();
-//   }
-
-// }
 
 
 /**  Copyright 2019 Google LLC. All Rights Reserved.

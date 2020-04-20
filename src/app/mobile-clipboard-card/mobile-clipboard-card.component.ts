@@ -16,42 +16,45 @@ import { DialogOverviewComponent } from '../dialog-overview/dialog-overview.comp
     styleUrls: ['./mobile-clipboard-card.component.css']
 })
 export class MobileClipboardCardComponent implements OnInit{
-  clipboardDataArr: ClipboardData[];
+  clipboardDataArr: ClipboardData[] = [];
   constructor(public dialog: MatDialog, 
   private httpService: HttpService, 
   private socketService: SocketService) { }
 
   addToClipboardArr(data: ClipboardData) {
     if(data != undefined) {
-      if (data["from"] == "desktop"){
-        return
-      }
-      if(data["clipboardText"].length>=30) {
-      data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
-      } else {
-      data["displayMessage"] = data["clipboardText"]
-      }
-      console.log("Desktop component: ", data);
-      this.clipboardDataArr.push(data);
-      this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
+      if (data["fromType"] !== "desktop"){
+        if(data["clipboardText"].length>=30) {
+          data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
+          } else {
+          data["displayMessage"] = data["clipboardText"]
+          }
+          console.log("Desktop component: ", data);
+          this.clipboardDataArr.push(data);
+          this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
+      }      
     }
   }
 
   ngOnInit(): void {
     this.httpService.getAllClips().subscribe((data: ClipboardData[]) => {
       console.log(data);
-      if(data.length != 0){
-      this.clipboardDataArr = data.filter(i => i.from === "mobile");
-      this.clipboardDataArr.forEach(data => {
-          // data["timestamp"] = new Date(data["timestamp"])
-          if(data["clipboardText"].length>=30) {
-          data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
-          } else {
-          data["displayMessage"] = data["clipboardText"]
-          }
-      });      
-      this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
-      }           
+      // if(data.length != 0){
+      // this.clipboardDataArr = data.filter(i => i.from === "mobile");
+      // this.clipboardDataArr.forEach(data => {
+      //     // data["timestamp"] = new Date(data["timestamp"])
+      //     if(data["clipboardText"].length>=30) {
+      //     data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
+      //     } else {
+      //     data["displayMessage"] = data["clipboardText"]
+      //     }
+      // });      
+      // this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
+      // }     
+      data.forEach((d: ClipboardData) => {
+        this.addToClipboardArr(d);
+      })
+      
     });
 
     this.socketService.getClips().subscribe((data: ClipboardData) => {
