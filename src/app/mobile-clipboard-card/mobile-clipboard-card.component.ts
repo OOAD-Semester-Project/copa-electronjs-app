@@ -5,7 +5,7 @@ import { HttpService } from '../http.service';
 import { ClipboardData } from '../clipboard.interface';
 import { SocketService } from '../socket.service';
 import { DialogOverviewComponent } from '../dialog-overview/dialog-overview.component';
-// import { url } from 'inspector';
+import { IpcService } from '../ipc.service';
 
 /**
  * @title Dialog Overview
@@ -17,9 +17,11 @@ import { DialogOverviewComponent } from '../dialog-overview/dialog-overview.comp
 })
 export class MobileClipboardCardComponent implements OnInit{
   clipboardDataArr: ClipboardData[] = [];
-  constructor(public dialog: MatDialog, 
-  private httpService: HttpService, 
-  private socketService: SocketService) { }
+  constructor(
+    public dialog: MatDialog, 
+    private httpService: HttpService, 
+    private socketService: SocketService,
+    private ipcService: IpcService) { }
 
   addToClipboardArr(data: ClipboardData) {
     if(data != undefined) {
@@ -38,19 +40,7 @@ export class MobileClipboardCardComponent implements OnInit{
 
   ngOnInit(): void {
     this.httpService.getAllClips().subscribe((data: ClipboardData[]) => {
-      console.log(data);
-      // if(data.length != 0){
-      // this.clipboardDataArr = data.filter(i => i.from === "mobile");
-      // this.clipboardDataArr.forEach(data => {
-      //     // data["timestamp"] = new Date(data["timestamp"])
-      //     if(data["clipboardText"].length>=30) {
-      //     data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6)+"......"
-      //     } else {
-      //     data["displayMessage"] = data["clipboardText"]
-      //     }
-      // });      
-      // this.clipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
-      // }     
+      console.log(data);      
       data.forEach((d: ClipboardData) => {
         this.addToClipboardArr(d);
       })
@@ -60,18 +50,19 @@ export class MobileClipboardCardComponent implements OnInit{
     this.socketService.getClips().subscribe((data: ClipboardData) => {
       console.log("New data in mobile component: ", data);
       this.addToClipboardArr(data);
+      this.ipcService.send('newData', data);
     })
   }
 
   openDialog(data): void {
-  const dialogRef = this.dialog.open(DialogOverviewComponent, {
-    width: '350px',
-    data: data
-  });
+    const dialogRef = this.dialog.open(DialogOverviewComponent, {
+      width: '350px',
+      data: data
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed');
-  });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
 }

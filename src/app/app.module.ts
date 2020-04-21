@@ -16,7 +16,9 @@ import { MobileClipboardCardComponent } from './mobile-clipboard-card/mobile-cli
 import { MatButtonModule } from '@angular/material/button';
 import { DialogOverviewComponent } from './dialog-overview/dialog-overview.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 
 @NgModule({
@@ -41,7 +43,8 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     MatNativeDateModule,
     ReactiveFormsModule,
     MatButtonModule,
-    ClipboardModule
+    ClipboardModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [],
   bootstrap: [AppComponent],

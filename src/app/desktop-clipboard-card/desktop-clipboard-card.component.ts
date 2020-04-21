@@ -7,6 +7,7 @@ import { SocketService } from '../socket.service';
 import { DialogOverviewComponent } from '../dialog-overview/dialog-overview.component';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { CommentStmt } from '@angular/compiler';
+import { IpcService } from '../ipc.service';
 
 /**
  * @title Dialog Overview
@@ -26,7 +27,8 @@ export class DesktopClipboardCardComponent implements OnInit{
 
   constructor(public dialog: MatDialog, 
     private httpService: HttpService,
-    private socketService: SocketService) {
+    private socketService: SocketService,
+    private ipcService: IpcService) {
   }
 
   addToClipboardArr(data: ClipboardData) {
@@ -52,7 +54,9 @@ export class DesktopClipboardCardComponent implements OnInit{
     });
     
     this.socketService.getClips().subscribe((data: ClipboardData) => {
+      console.log("New data in desktop component: ", data);
       this.addToClipboardArr(data);
+      this.ipcService.send("newData", data);
     })
   }
   
