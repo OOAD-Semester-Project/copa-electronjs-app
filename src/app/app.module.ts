@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogOverviewComponent } from './dialog-overview/dialog-overview.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { initializer } from './app.initializer'
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
@@ -44,9 +46,15 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     ReactiveFormsModule,
     MatButtonModule,
     ClipboardModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    KeycloakAngularModule
   ],
-  providers: [],
+  providers: [{ 
+    provide: APP_INITIALIZER, 
+    useFactory: initializer, 
+    deps: [ KeycloakService ], 
+    multi: true
+  }],
   bootstrap: [AppComponent],
   exports: [ClipboardModule]
 })
