@@ -1,5 +1,10 @@
-<mat-card *ngFor="let data of clipboardDataArr" style="margin: 2% 0%">
+<mat-card *ngFor="let data of clipboardDataArr" style="margin: 2% 0%; display: flex; ">
     <div (click)="openDialog(data)">
         {{data.displayMessage}}
     </div>
+    <!-- <div style="float: right" >
+        <button mat-fab color="primary">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div> -->
 </mat-card>

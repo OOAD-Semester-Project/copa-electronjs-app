@@ -19,8 +19,9 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { initializer } from './app.initializer'
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { environment } from 'src/environments/environment';
 
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+const config: SocketIoConfig = { url: environment.clipboardserver.baseUrl, options: {} };
 
 
 @NgModule({
@@ -49,12 +50,14 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     SocketIoModule.forRoot(config),
     KeycloakAngularModule
   ],
-  providers: [{ 
-    provide: APP_INITIALIZER, 
-    useFactory: initializer, 
-    deps: [ KeycloakService ], 
-    multi: true
-  }],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializer,
+      multi: true,
+      deps: [KeycloakService]
+    }
+  ],
   bootstrap: [AppComponent],
   exports: [ClipboardModule]
 })

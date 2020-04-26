@@ -39,7 +39,7 @@ export class MobileClipboardCardComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.httpService.getAllClips().subscribe((data: ClipboardData[]) => {
+    this.httpService.getAllClips().subscribe((data: any) => {
       console.log(data);      
       data.forEach((d: ClipboardData) => {
         this.addToClipboardArr(d);
