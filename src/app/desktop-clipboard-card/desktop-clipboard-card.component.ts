@@ -71,7 +71,15 @@ export class DesktopClipboardCardComponent implements OnInit{
     });
 
   }
-
+  
+  deleteClip(data: ClipboardData): void {
+    this.httpService.deleteClip(data).subscribe((resultData: any) => {
+      console.log("delete response: ", resultData);
+      this._clipboardDataArr = this._clipboardDataArr.filter(function( obj ) {
+        return obj._id !== data._id;
+      });
+    })
+  }
 }
 
 

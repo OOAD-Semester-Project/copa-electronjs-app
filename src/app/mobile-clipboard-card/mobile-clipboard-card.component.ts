@@ -65,6 +65,15 @@ export class MobileClipboardCardComponent implements OnInit{
     });
   }
 
+  deleteClip(data: ClipboardData): void {
+    this.httpService.deleteClip(data).subscribe((resultData: any) => {
+      console.log("delete response: ", resultData);
+      this.clipboardDataArr = this.clipboardDataArr.filter(function( obj ) {
+        return obj._id !== data._id;
+      });
+    })
+  }
+
 }
 
 /**  Copyright 2019 Google LLC. All Rights Reserved.

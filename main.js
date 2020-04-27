@@ -4,28 +4,42 @@
 
 const { clipboard, ipcMain} = require('electron')
 const {app, BrowserWindow} = require('electron')
+// let http = require('http');
+// let fs = require('fs');
+// var static = require('node-static');
+// var file = new static.Server(`${__dirname}/public`)
 
-// import { app, BrowserWindow, ipcMain, IpcMessageEvent } from 'electron';
-// const socketUrl = "http://localhost:3000/"
-// const socket = require('socket.io-client')(socketUrl);
+// const Keycloak = http.createServer((request, response) => {
+//   console.log("__dirname", __dirname);
+//   response.writeHeader(200, {"Content-Type": "text/html"});
+  
+//   // var readSream = fs.createReadStream(__dirname + '/src/index.html','utf8')
+//   // readSream.pipe(response);
 
-// socket.on('connect', function(){
-//   console.log("Socket connected");
+//   response.sendFile(__dirname + '/src/index.html');
 // });
+// Keycloak.listen(3010);
+
 ipcMain.on('newData', (data) => {
   console.log("newData event happened");
   clipboard.writeText(data["clipboardText"]);
-  // event.sender.send('pong');
 });
+
+// ipcMain.on('keycloak-token', (event, token) => {
+//   console.log("token: ", token);
+//   const winURL = `http://copa-keycloak.herokuapp.com?token=${token}`;
+//   mainWindow.loadURL(winURL);
+// });
+
 const url = require("url");
 const path = require("path");
 const { net } = require('electron')
-const baseUrl = "http://localhost:3000"
+const baseUrl = "http://clipboard-syncronization-app.appspot.com"
 let mainWindow;
 let previousText = "";
 
 function createWindow () {
-
+  
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -42,14 +56,7 @@ function createWindow () {
       protocol: "file:",
       slashes: true
     })
-  );
-  // socket.on('newData', function(data){
-  //   console.log("New data arrived: ", data);
-  //   clipboard.writeText(data["clipboardText"]);
-  //   // ipcMain.send(data, "pong");
-  //   // mainWindow.webContents.send("pong", data);
-  // });
-
+  );  
   setInterval(function(){ 
     let text = clipboard.readText();
     let timestamp = Date.now();
@@ -57,25 +64,25 @@ function createWindow () {
       previousText = text;
       console.log("Text: "+text);
       
-      // let token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJMX3dTaUlMdG9Ob0lFSWpCdkxnQlFoNFNWa2k5bnU5UEhhX0xYdHREYWxnIn0.eyJqdGkiOiJjMDUxNzYwZi0wMTIzLTQ5Y2EtOWFiYy1iODE5NDJlNTg2YTQiLCJleHAiOjE1ODc0NzE5OTEsIm5iZiI6MCwiaWF0IjoxNTg3NDM1OTkxLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvY29wYSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJiMTVjZDYxZC0wODBiLTRmYWUtOTk0NC0yM2Y3NzlhZWQ2ZWEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJjbGlwYm9hcmQtc2VydmVyIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiYWY5YjcwMGUtNTYwMC00YTg0LTg0MWItZDIxNTYzMjBmZDU3IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjMwMDAiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJNYWRodXN1ZGhhbiBBaXRoYWwiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtYWRodSIsImdpdmVuX25hbWUiOiJNYWRodXN1ZGhhbiIsImZhbWlseV9uYW1lIjoiQWl0aGFsIiwiZW1haWwiOiJtYWRodUBtYWlsLmNvbSJ9.LjXrdrEGYKS6JBe0LTTxI_lIq25hCIJuRA_Xq00Pb6EQuPZT0vcxi80vA3Seo7gf1ky55XdTpsKRA0XnfrIJRbIs7Xbr18sEIe7gt0-GhdCcDkdbWV9e9TwXFWgvbYJWzGnFPAI4bSyalf5PfwJClNFqmrgEGvB3R_A81AuuCZ_jg7SjnJ2Z39__yi5-zEP9LxUsyfsK3qFRnHJklZGN6RZNDY1mBEyXxUsz1Rox0VjdWWKR3ogHawifu2EOEBGYhTc3YhlxxJsXIZZv-Y0QVwOjEwNVyM7kNcdwVbj5I9YjfABYBe8jTQzEyzwc9npT7KlyeIXjSXT6heb8G8MeaA";
-      // let userId = "madhu"
-      // let clipboardData = {
-      //   timestamp: timestamp,
-      //   clipboardText: text,
-      //   userId: userId,
-      //   fromType: "desktop",
-      //   from: "desktop1"          
-      // }
-      // let options = {
-      //   method: "POST",
-      //   url: baseUrl+"/addClip",
-      //   headers: {
-      //     Authorization: "Bearer "+token
-      //   }, 
-      //   body: clipboardData
-      // }
-      // const request = net.request(options);
-      
+      let token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJQcHZzeVdqVHBQZ2JmVmJrNXhpbXI0aGxEczJYZlB0cFQ2elE1VTg3UzFrIn0.eyJleHAiOjE1ODc5MjgzOTUsImlhdCI6MTU4NzkyODA5NSwianRpIjoiNzY0OWJhZjEtMjFmOS00NDMwLWI0YTAtYTcyYmU2ZWNhMzNmIiwiaXNzIjoiaHR0cHM6Ly9jb3BhLWtleWNsb2FrLmhlcm9rdWFwcC5jb20vYXV0aC9yZWFsbXMvY29wYSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJiYzc4YmY3MC0yZjVhLTQxNWUtOWJhZi05Y2VhZWI5NjM5MjMiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJjbGlwYm9hcmQtc2VydmVyIiwic2Vzc2lvbl9zdGF0ZSI6Ijk0ZGYxYTk4LTY0Y2MtNGE4NC04MTRiLThmNjQ3YzdkOTA4YSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2NsaXBib2FyZC1zeW5jcm9uaXphdGlvbi1hcHAuYXBwc3BvdC5jb20vKiIsImh0dHA6Ly9sb2NhbGhvc3Q6NDIwMC8qIiwiaHR0cDovL2xvY2FsaG9zdDozMDAwLyJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6Ik1hZGh1IEFpdGhhbCIsInByZWZlcnJlZF91c2VybmFtZSI6Im1hZGh1IiwiZ2l2ZW5fbmFtZSI6Ik1hZGh1IiwiZmFtaWx5X25hbWUiOiJBaXRoYWwiLCJlbWFpbCI6Im1hZGh1QG1haWwuY29tIn0.e6AmkW0AsOm-mmX14zJ23HkQBjR17yIKCKM8HnuOPwXAdiWRkppV3WphErVOWVE66jXjdTBvVoMKtPPAVQKhkY4CW6_opBSontzfY3TkVupr1kQQMR4OgXj6EQjnQxJWMdQk2c2ZHeWfN276rnQVt-ghH3K-6g21EwSEHZWI9Qw8JnSHGJFEDTqqTy0nIU1Yekn3aE2kaVPRm9CFd9KeZm7FpJEg_yy_kufNdQvACbce08_1aW3NjfNsPpUaoMg_5XZoSf-Ppwo_f_5W4DfY10uisgrnTy4Yms62PW42Q1ZU_oUVyVdy2XlvcX--HKxZOEy-0UihToT2EOqaNMkXSQ";
+      let userId = "madhu"
+      let clipboardData = {
+        timestamp: timestamp,
+        clipboardText: text,
+        userId: userId,
+        fromType: "desktop",
+        from: "desktop1"          
+      }
+      let options = {
+        method: "POST",
+        url: baseUrl+"/addClip",
+        headers: {
+          Authorization: "Bearer "+token
+        }, 
+        body: clipboardData
+      }
+
+      // const request = net.request(options);      
       // request.on('response', (response) => {
       //   console.log(`STATUS: ${response.statusCode}`)
       //   console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
@@ -87,9 +94,7 @@ function createWindow () {
       //   })
       // })
       // request.end();
-      // socket.emit("desktopClient", clipboardData);
-      // mainWindow.webContents.send("newClipboardTextFromElectron", clipboardData);
-      // socket.emit("mobileClient", clipboardData);
+      
     } else {
       previousText = text;
     }
@@ -97,7 +102,7 @@ function createWindow () {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
-
+  console.log("URL: ", mainWindow.webContents);
   mainWindow.on('closed', function () {
     mainWindow = null
   })

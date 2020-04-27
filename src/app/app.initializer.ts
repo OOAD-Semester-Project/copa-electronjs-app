@@ -1,25 +1,27 @@
-import { KeycloakService } from 'keycloak-angular';
+// import { KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
- 
-export function initializer(keycloak: KeycloakService): () => Promise<any> {
-  return (): Promise<any> => keycloak.init({
-      config: {
-        url: 'https://copa-keycloak.herokuapp.com/auth',
-        // url: 'http://localhost:8080/auth',
-        realm: 'copa',
-        clientId: 'angular-client', 
-        // credentials: {
-        //     secret: "d4415343-c66e-4dc0-ba11-afecda429bb2"
-        // }
-      },
-      initOptions: {
-          onLoad: "login-required",
-        //   checkLoginIframe: false
-      }
-}).then(function(authenticated) {
-    // alert(authenticated ? 'authenticated' : 'not authenticated');
-}).catch(function(err) {
-    console.log("error:  ", err);
-    alert('failed to initialize keycloak service in angular');
-});;
-}
+
+
+// export function initializer(keycloak: KeycloakService): () => Promise<any> {
+//   return (): Promise<any> => keycloak.init({
+//       config: environment.keycloak,
+//       initOptions: {
+//           onLoad: "login-required",
+//         //   redirectUri: 'http://localhost:4200/'
+//       }
+// }).then(function(authenticated) {    
+//     let keycloakService = new KeycloakService();
+
+//     if (authenticated) {               
+//         sessionStorage.setItem('kctoken', keycloakService.getKeycloakInstance().token);
+//         setInterval(() => {
+//           keycloak.getKeycloakInstance().updateToken(10).error(() => keycloak.getKeycloakInstance().logout());
+//           sessionStorage.setItem('kctoken', keycloak.getKeycloakInstance().token);
+//         }, 10000);
+//     }
+//     // alert(authenticated ? 'authenticated' : 'not authenticated');
+// }).catch(function(err) {
+//     console.log("error:  ", err);
+//     alert('failed to initialize keycloak service in angular');
+// });;
+// }

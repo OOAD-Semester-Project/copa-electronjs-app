@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 // import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
-import { KeycloakService } from 'keycloak-angular';
+import { KeycloakService } from './keycloak.service';
+// import { KeycloakService } from 'keycloak-angular';
 // import * as io from 'socket.io-client';
 // import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
@@ -17,7 +18,8 @@ export class SocketService {
     private socket: Socket,
     private keycloakAngular: KeycloakService
   ) {    
-    this.socket.emit("join", {token: this.keycloakAngular.getKeycloakInstance().token});
+    // this.socket.emit("join", {token: this.keycloakAngular.getKeycloakInstance().token});
+    this.socket.emit("join", {token: this.keycloakAngular.getToken()});
    }
 
   getClips() {

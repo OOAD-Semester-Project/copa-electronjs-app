@@ -8,7 +8,23 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
+  <script src="https://copa-keycloak.herokuapp.com/auth/js/keycloak.js"></script>
+  <!-- <script>
+      var keycloak = new Keycloak({
+          url: 'https://copa-keycloak.herokuapp.com/auth',
+          // url: 'http://localhost:8080/auth',
+          realm: 'copa',
+          clientId: 'angular-client'
+        });
+      keycloak.init({
+          onLoad: "login-required"
+      }).then(function(authenticated) {
+        
+          alert(authenticated ? 'authenticated' : 'not authenticated');
+      }).catch(function() {
+          alert('failed to initialize');
+      });
+  </script> -->
 </head>
 <body class="mat-typography">
   <app-root></app-root>

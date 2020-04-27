@@ -26,7 +26,7 @@
     "@types/electron": "^1.6.10",
     "electron-clipboard-extended": "^1.1.1",
     "http": "0.0.1-security",
-    "keycloak-angular": "^7.2.0",
+    "jwt-decode": "^2.2.0",
     "keycloak-js": "^9.0.0",
     "ngx-socket-io": "^3.0.1",
     "rxjs": "~6.5.4",

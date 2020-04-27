@@ -2,22 +2,22 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { KeycloakConfig } from 'keycloak-angular';
+// import { KeycloakConfig } from 'keycloak-angular';
 
 // Add here your keycloak setup infos
-let keycloakConfig: KeycloakConfig = {
-  // url: 'https://copa-keycloak.herokuapp.com/auth',
-  url: 'http://localhost:8080/auth',
-  realm: 'copa',
-  clientId: 'angular-client'
-};
+// let keycloakConfig: KeycloakConfig = {
+//   url: 'https://copa-keycloak.herokuapp.com/auth',
+//   // url: 'http://localhost:8080/auth',
+//   realm: 'copa',
+//   clientId: 'angular-client'
+// };
 
 export const environment = {
   production: false,
-  keycloak: keycloakConfig,  
+  // keycloak: keycloakConfig,  
   clipboardserver: {
-    baseUrl: "http://localhost:3000"
-    // baseUrl: "http://clipboard-syncronization-app.appspot.com"
+    // baseUrl: "http://localhost:3000"
+    baseUrl: "http://clipboard-syncronization-app.appspot.com"
   }
 };
 

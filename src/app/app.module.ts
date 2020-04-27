@@ -17,12 +17,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogOverviewComponent } from './dialog-overview/dialog-overview.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { initializer } from './app.initializer'
-import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+// import { initializer } from './app.initializer'
+// import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
 
-const config: SocketIoConfig = { url: environment.clipboardserver.baseUrl, options: {} };
 
+import { KeycloakService } from './keycloak.service';
+
+
+const config: SocketIoConfig = { url: environment.clipboardserver.baseUrl, options: {} };
+export function kcFactory(keycloakService: KeycloakService) {
+  return () => keycloakService.init();
+}
 
 @NgModule({
   declarations: [
@@ -48,14 +54,21 @@ const config: SocketIoConfig = { url: environment.clipboardserver.baseUrl, optio
     MatButtonModule,
     ClipboardModule,
     SocketIoModule.forRoot(config),
-    KeycloakAngularModule
+    // KeycloakAngularModule
   ],
   providers: [
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: initializer,
+    //   multi: true,
+    //   deps: [KeycloakService]
+    // }
+    KeycloakService,
     {
       provide: APP_INITIALIZER,
-      useFactory: initializer,
-      multi: true,
-      deps: [KeycloakService]
+      useFactory: kcFactory,
+      deps: [KeycloakService],
+      multi: true
     }
   ],
   bootstrap: [AppComponent],

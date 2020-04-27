@@ -5,3 +5,27 @@
         width: 100%
 
   }
+
+  .example-flex-container {
+    display: flex;
+    /* justify-content: space-between; */
+    width: 100%;
+  }
+
+  .example-button-container {
+    display: flex;
+    justify-content: center;
+    width: 20%;
+  }
+
+  .text-class {
+    display: flex;
+    justify-content: left;
+    width: 80%;
+  }
+
+  .date-class {
+    display: flex;
+    justify-content: right;
+    width: 20%;
+  }

@@ -1,10 +1,16 @@
 <mat-card *ngFor="let data of clipboardDataArr" style="margin: 2% 0%; display: flex; ">
-    <div (click)="openDialog(data)">
-        {{data.displayMessage}}
+    <div style="display: flex; justify-content: space-between; width: 100%;">
+        <div class="text-class" (click)="openDialog(data)">
+            {{data.displayMessage}}
+        </div> 
+        <!-- <div class="date-class">
+            {{data.timestamp}}
+        </div>   -->
+        <div class="example-button-container">
+            <button mat-icon-button color="primary" aria-label="Example icon button with a delete icon" (click)="deleteClip(data)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
     </div>
-    <!-- <div style="float: right" >
-        <button mat-fab color="primary">
-            <mat-icon>delete</mat-icon>
-        </button>
-    </div> -->
+
 </mat-card>
