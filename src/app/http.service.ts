@@ -33,7 +33,7 @@ export class HttpService {
   private options;
   constructor(private http: HttpClient,
     // protected keycloakAngular: KeycloakService
-    protected keycloakAngular: KeycloakService) {
+    protected keycloak: KeycloakService) {
       
     }
 
@@ -41,9 +41,9 @@ export class HttpService {
     let options = {
       headers: new HttpHeaders()
         // .set('Authorization',  `Bearer `+this.keycloakAngular.getKeycloakInstance().token)
-        .set('Authorization',  `Bearer `+this.keycloakAngular.getToken())
+        .set('Authorization',  `Bearer `+this.keycloak.getToken())
     }
-    let decodedToken = jwt_decode(this.keycloakAngular.getToken()); 
+    let decodedToken = jwt_decode(this.keycloak.getToken()); 
     console.log("decoded token: ", decodedToken);
     let userId = decodedToken["preferred_username"];
     let url: string = this.getAllClipsApi+userId;    
@@ -57,7 +57,7 @@ export class HttpService {
     let options = {
       headers: new HttpHeaders()
         // .set('Authorization',  `Bearer `+this.keycloakAngular.getKeycloakInstance().token)
-        .set('Authorization',  `Bearer `+this.keycloakAngular.getToken())
+        .set('Authorization',  `Bearer `+this.keycloak.getToken())
     }
     return this.http.post(this.addClipApi, reqBody, 
       options
@@ -67,7 +67,7 @@ export class HttpService {
   deleteClip(clipData: ClipboardData) {
     let id = clipData._id;
     let options = {
-      headers: new HttpHeaders().set('Authorization',  `Bearer `+this.keycloakAngular.getToken()),
+      headers: new HttpHeaders().set('Authorization',  `Bearer `+this.keycloak.getToken()),
       body: {
         "_id": id
       }

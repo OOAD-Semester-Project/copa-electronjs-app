@@ -3,8 +3,10 @@ import { IpcService } from './ipc.service';
 import { HttpService } from './http.service';
 import { ClipboardData } from './clipboard.interface';
 import { SocketService } from './socket.service';
-import { interval } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { interval, Observable, fromEvent, merge, timer } from 'rxjs';
+import { map, debounce } from 'rxjs/operators';
+import { KeycloakService } from './keycloak.service';
+import * as jwt_decode from 'jwt-decode';
 
 @Component({
   selector: 'app-root',
@@ -17,16 +19,18 @@ export class AppComponent implements OnInit {
   mobileClipboardDataArr: ClipboardData[] = [];
   desktopClipboardDataArr: ClipboardData[] = [];
   timeout: any;
+  previousText: String = "";
+  
 
   constructor(private readonly _ipc: IpcService,
     private httpService: HttpService,
-    private socketService: SocketService) {  }
+    private socketService: SocketService,
+    private keycloak: KeycloakService) { }
 
-  addToClipboardArr(data: ClipboardData) {
-    
+  addToClipboardArr(data: ClipboardData) {    
     if(data != undefined) {
       let date = new Date(Number(data["timestamp"]));
-      data["displayDate"] = date;
+      data["displayDate"] = date.toLocaleString();
       if(data["clipboardText"].length>=30) {
         data["displayMessage"] = data["clipboardText"].split(" ").slice(0,6).join(" ")+"......"
       } else {
@@ -40,7 +44,52 @@ export class AppComponent implements OnInit {
     }
   }
 
+  onKeyPress($event: KeyboardEvent) {
+    if(($event.ctrlKey || $event.metaKey) && $event.keyCode == 67) {
+      this.getSelectionText();
+    }              
+  }
+
+  private bindKeypressEvent(): Observable<KeyboardEvent> {
+      const eventsType$ = [
+          fromEvent(window, 'keypress'),
+          fromEvent(window, 'keydown')
+      ];
+      // we merge all kind of event as one observable.
+      return merge(...eventsType$)
+          .pipe(
+              // We prevent multiple next by wait 10ms before to next value.
+              debounce(() => timer(10)),
+              // We map answer to KeyboardEvent, typescript strong typing...
+              map(state => (state as KeyboardEvent))
+          );
+  }
+
+  getSelectionText(){
+    let time = Date.now();
+    let selectedText = ""
+    if (window.getSelection){ // all modern browsers and IE9+
+      selectedText = window.getSelection().toString()
+    }
+    if(selectedText!=="" && selectedText!==this.previousText) {
+      let decodedToken = jwt_decode(this.keycloak.getToken()); 
+      let userId = decodedToken["preferred_username"]
+      let reqBody: ClipboardData = {
+        "timestamp": time,
+        "clipboardText": selectedText,
+        "from": "desktop1",
+        "fromType": "desktop",
+        "userId": userId
+      };
+      this.httpService.addClip(reqBody).subscribe((result: any) => {
+        console.log(result);
+      })
+    }    
+  }
+
   ngOnInit(): void {
+    this.bindKeypressEvent().subscribe(($event: KeyboardEvent) => this.onKeyPress($event));
+
     this.httpService.getAllClips().subscribe((data: any) => {
       console.log(data);      
       data.forEach((d: ClipboardData) => {
