@@ -17,7 +17,7 @@ export const environment = {
   // keycloak: keycloakConfig,  
   clipboardserver: {
     // baseUrl: "http://localhost:3000"
-    baseUrl: "http://clipboard-syncronization-app.appspot.com"
+    baseUrl: "https://clipboard-syncronization-app.appspot.com"
   }
 };
 
