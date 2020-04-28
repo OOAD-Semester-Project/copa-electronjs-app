@@ -26,4 +26,9 @@ export class SocketService {
       return this.socket
           .fromEvent("newData");
   }
+
+  listenForNewDataArrived() {
+    return this.socket
+        .fromEvent("newDataArrived");
+  }
 }

@@ -13,14 +13,8 @@ export class KeycloakService {
 
   private keycloakAuth: any;
   init(): Promise<any> {
-  return new Promise((resolve, reject) => {
-      const config = {
-        url: 'https://copa-keycloak.herokuapp.com/auth',
-        // url: 'http://localhost:8080/auth',
-        realm: 'copa',
-        clientId: 'angular-client'
-      };
-      this.keycloakAuth = new Keycloak(config);
+  return new Promise((resolve, reject) => {      
+      this.keycloakAuth = new Keycloak(environment.keycloak);
       this.keycloakAuth.init({ 
         onLoad: 'login-required', 
       })

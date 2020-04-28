@@ -17,8 +17,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogOverviewComponent } from './dialog-overview/dialog-overview.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-// import { initializer } from './app.initializer'
-// import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
 
 
@@ -41,9 +39,6 @@ export function kcFactory(keycloakService: KeycloakService) {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    // RouterModule.forRoot([
-    //   { },
-    // ]),
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -54,15 +49,8 @@ export function kcFactory(keycloakService: KeycloakService) {
     MatButtonModule,
     ClipboardModule,
     SocketIoModule.forRoot(config),
-    // KeycloakAngularModule
   ],
   providers: [
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: initializer,
-    //   multi: true,
-    //   deps: [KeycloakService]
-    // }
     KeycloakService,
     {
       provide: APP_INITIALIZER,

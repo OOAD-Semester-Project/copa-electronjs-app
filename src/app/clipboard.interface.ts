@@ -3,8 +3,9 @@ export interface ClipboardData {
     _id: string;
     userId: string;
     from: string;
-    timestamp: string;
+    fromType: string;
+    timestamp: Number;
     clipboardText: string;
-    // displayMessage: string;
+    displayMessage: string;
   }
   

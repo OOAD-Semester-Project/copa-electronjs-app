@@ -1,7 +1,14 @@
-<mat-card *ngFor="let data of clipboardDataArr" style="margin: 2% 0%">
+<mat-card *ngFor="let data of desktopClipboardDataArr" style="margin: 2% 0%">
     <div style="display: flex; justify-content: space-between; width: 100%;">
         <div class="text-class" (click)="openDialog(data)">
             {{data.displayMessage}}
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <b>
+                ({{data.displayDate}})
+            </b>
         </div>   
 
         <!-- <div class="date-class">

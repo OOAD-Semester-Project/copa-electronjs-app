@@ -5,18 +5,18 @@
 // import { KeycloakConfig } from 'keycloak-angular';
 
 // Add here your keycloak setup infos
-// let keycloakConfig: KeycloakConfig = {
-//   url: 'https://copa-keycloak.herokuapp.com/auth',
-//   // url: 'http://localhost:8080/auth',
-//   realm: 'copa',
-//   clientId: 'angular-client'
-// };
 
+const keycloakConfig = {
+  url: 'https://copa-keycloak.herokuapp.com/auth',
+  // url: 'http://localhost:8080/auth',
+  realm: 'copa',
+  clientId: 'angular-client'
+};
 export const environment = {
   production: false,
-  // keycloak: keycloakConfig,  
+  keycloak: keycloakConfig,  
   clipboardserver: {
-    // baseUrl: "http://localhost:3000"
+    // baseUrl: "http://localhost:3010"
     baseUrl: "https://clipboard-syncronization-app.appspot.com"
   }
 };

@@ -1,7 +1,14 @@
-<mat-card *ngFor="let data of clipboardDataArr" style="margin: 2% 0%; display: flex; ">
+<mat-card *ngFor="let data of mobileClipboardDataArr" style="margin: 2% 0%; display: flex; ">
     <div style="display: flex; justify-content: space-between; width: 100%;">
         <div class="text-class" (click)="openDialog(data)">
-            {{data.displayMessage}}
+            {{data.displayMessage}}&nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <b>
+                ({{data.displayDate}})
+            </b>
         </div> 
         <!-- <div class="date-class">
             {{data.timestamp}}
@@ -11,6 +18,5 @@
                 <mat-icon>delete</mat-icon>
             </button>
         </div>
-    </div>
-
+    </div>   
 </mat-card>

@@ -8,11 +8,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: 'dialog-overview.component.html',
 })
 export class DialogOverviewComponent {
-
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ClipboardData,
-    private _snackBar: MatSnackBar) {}
+    private _snackBar: MatSnackBar) {    }
 
   onNoClick(): void {
     this.dialogRef.close();
