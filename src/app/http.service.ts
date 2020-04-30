@@ -30,7 +30,6 @@ export class HttpService {
   private addClipApi: string = environment.clipboardserver.baseUrl+"/addClip/"
   private deleteApi: string = environment.clipboardserver.baseUrl+"/deleteClip/"
 
-  private options;
   constructor(private http: HttpClient,
     protected keycloak: KeycloakService) {
       

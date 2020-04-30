@@ -1,5 +1,7 @@
 # Copy Once Paste Anywhere
 
+This is the GitHUb repository for the webapp of the Clipboard Synchronization project, developed using Angular. If you want to take a quick look at this app, it is already deployed [here](https://clipboard-sync-angular-app.appspot.com/). It requires users to enter the credentials to login!
+
 Team Members
 ---
 1. Madhusudhan Aithal

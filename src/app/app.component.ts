@@ -15,7 +15,6 @@ import { Clipboard } from '@angular/cdk/clipboard';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'copa-electron';
   clipboardDataArr: ClipboardData[] = [];
   mobileClipboardDataArr: ClipboardData[] = [];
   desktopClipboardDataArr: ClipboardData[] = [];
@@ -29,8 +28,8 @@ export class AppComponent implements OnInit {
     private keycloak: KeycloakService) { 
     }
 
-  // Util function to filter the data for desktop and mobile tabs
-  addToClipboardArr(data: ClipboardData) {    
+  // Utility function to filter the data for desktop and mobile tabs
+  private addToClipboardArr(data: ClipboardData) {    
     if(data != undefined) {
       let date = new Date(Number(data["timestamp"]));
       data["displayDate"] = date.toLocaleString();
@@ -55,6 +54,7 @@ export class AppComponent implements OnInit {
   }
 
   // Function to bind the keypress event with the window object
+  // Uses Observer pattern
   private bindKeypressEvent(): Observable<KeyboardEvent> {
       const eventsType$ = [
           fromEvent(window, 'keypress'),
@@ -101,11 +101,14 @@ export class AppComponent implements OnInit {
     });
     
     // Subscriber for the socket message sent by the server whenever there is new data
+    // This makes use of the Observer pattern where the socketService is the publisher
     this.socketService.getClips().subscribe((data: ClipboardData) => {
       console.log("New data in mobile component: ", data);
       this.clipboardDataArr = [];
       this.desktopClipboardDataArr = [];
       this.mobileClipboardDataArr = [];
+
+      // Observer pattern being used here
       this.httpService.getAllClips().subscribe((data: any) => {
         console.log(data);      
         data.forEach((d: ClipboardData) => {
@@ -118,11 +121,14 @@ export class AppComponent implements OnInit {
     })
 
     // Subscriber for the socket message sent by the server when the user deletes a clipboard any of their devices
+    // This makes use of the Observer pattern where the socketService is the publisher
     this.socketService.listenForNewDataArrived().subscribe((data: ClipboardData) => {
       console.log("New data in mobile component: ", data);
       this.clipboardDataArr = [];
       this.desktopClipboardDataArr = [];
       this.mobileClipboardDataArr = [];
+
+      // Observer pattern being used here
       this.httpService.getAllClips().subscribe((data: any) => {
         console.log(data);      
         data.forEach((d: ClipboardData) => {

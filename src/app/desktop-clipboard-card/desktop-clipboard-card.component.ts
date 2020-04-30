@@ -43,6 +43,8 @@ export class DesktopClipboardCardComponent implements OnInit{
   
   // Callback to make a DELETE HTTP request when user clicks delete button
   deleteClip(data: ClipboardData): void {
+    // This makes use of Observer pattern where the httpService is the publisher and 
+    // the current class is the subscriber
     this.httpService.deleteClip(data).subscribe((resultData: any) => {
       console.log("delete response: ", resultData);
     })
