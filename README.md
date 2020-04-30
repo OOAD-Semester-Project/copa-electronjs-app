@@ -1,6 +1,6 @@
-# Copy Once Paste Anywhere
+# Copy Once Paste Anywhere - Angular Webapp Repo
 
-This is the GitHUb repository for the webapp of the Clipboard Synchronization project, developed using Angular. If you want to take a quick look at this app, it is already deployed [here](https://clipboard-sync-angular-app.appspot.com/). It requires users to enter the credentials to login!
+This is the GitHub repository for the webapp of the Clipboard Synchronization project, developed using Angular. If you want to take a quick look at this app, it is already deployed [here](https://clipboard-sync-angular-app.appspot.com/). It requires users to enter the credentials to login!
 
 Team Members
 ---
