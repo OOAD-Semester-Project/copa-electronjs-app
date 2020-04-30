@@ -1,5 +1,8 @@
 # Copy Once Paste Anywhere - Angular Webapp Repo
 
+## Link To Project 6 Report PDF: [OOAD Project 6 (Final Report)](https://github.com/OOAD-Semester-Project/copa-electronjs-app/blob/master/OOAD%20Project%206.pdf)
+
+## Introduction
 This is the GitHub repository for the webapp of the Clipboard Synchronization project, developed using Angular. If you want to take a quick look at this app, it is already deployed [here](https://clipboard-sync-angular-app.appspot.com/). It requires users to enter the credentials to login!
 
 Team Members
