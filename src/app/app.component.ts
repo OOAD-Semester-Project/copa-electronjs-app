@@ -7,6 +7,7 @@ import { interval, Observable, fromEvent, merge, timer } from 'rxjs';
 import { map, debounce } from 'rxjs/operators';
 import { KeycloakService } from './keycloak.service';
 import * as jwt_decode from 'jwt-decode';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,8 @@ export class AppComponent implements OnInit {
   constructor(private readonly _ipc: IpcService,
     private httpService: HttpService,
     private socketService: SocketService,
-    private keycloak: KeycloakService) { }
+    private keycloak: KeycloakService) { 
+    }
 
   addToClipboardArr(data: ClipboardData) {    
     if(data != undefined) {
@@ -55,12 +57,9 @@ export class AppComponent implements OnInit {
           fromEvent(window, 'keypress'),
           fromEvent(window, 'keydown')
       ];
-      // we merge all kind of event as one observable.
       return merge(...eventsType$)
           .pipe(
-              // We prevent multiple next by wait 10ms before to next value.
               debounce(() => timer(10)),
-              // We map answer to KeyboardEvent, typescript strong typing...
               map(state => (state as KeyboardEvent))
           );
   }
@@ -88,6 +87,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.bindKeypressEvent().subscribe(($event: KeyboardEvent) => this.onKeyPress($event));
 
     this.httpService.getAllClips().subscribe((data: any) => {
@@ -100,7 +100,6 @@ export class AppComponent implements OnInit {
 
     this.socketService.getClips().subscribe((data: ClipboardData) => {
       console.log("New data in mobile component: ", data);
-      // this.addToClipboardArr(data);
       this.clipboardDataArr = [];
       this.desktopClipboardDataArr = [];
       this.mobileClipboardDataArr = [];
@@ -113,12 +112,10 @@ export class AppComponent implements OnInit {
         this.mobileClipboardDataArr.sort((a, b) => +a.timestamp > +b.timestamp ? -1 : 1) 
         
       });
-      this._ipc.send('newData', data);
     })
 
     this.socketService.listenForNewDataArrived().subscribe((data: ClipboardData) => {
       console.log("New data in mobile component: ", data);
-      // this.addToClipboardArr(data);
       this.clipboardDataArr = [];
       this.desktopClipboardDataArr = [];
       this.mobileClipboardDataArr = [];
@@ -133,7 +130,6 @@ export class AppComponent implements OnInit {
         console.log(this.desktopClipboardDataArr);
         console.log(this.mobileClipboardDataArr);
       });
-      // this._ipc.send('newData', data);
     })
   }
 }

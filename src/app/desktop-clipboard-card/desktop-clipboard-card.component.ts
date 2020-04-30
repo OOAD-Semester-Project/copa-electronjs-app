@@ -24,7 +24,9 @@ export class DesktopClipboardCardComponent implements OnInit{
     private httpService: HttpService,
     ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    
+  }
   
   openDialog(data): void {    
     const dialogRef = this.dialog.open(DialogOverviewComponent, {
