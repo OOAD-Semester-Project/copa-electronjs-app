@@ -16,16 +16,14 @@ export class HeaderComponent implements OnInit {
     protected keycloakAngular: KeycloakService
     ) { }
 
-  ngOnInit(): void {
-    // let accessToken = this.keycloakAngular.getKeycloakInstance().token;
-    // console.log(this.keycloakAngular.getKeycloakInstance());
-  }
+  ngOnInit(): void {}
 
+  // Callback for logout action
   public logout(): void {
-    // this.keycloakAngular.getKeycloakInstance().logout();
     this.keycloakAngular.logout();
   }
 
+  // Getter for headerText
   public get getHeaderText(): string {
     return this.headerText;
   }

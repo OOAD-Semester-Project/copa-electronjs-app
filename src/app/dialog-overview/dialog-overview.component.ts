@@ -17,11 +17,12 @@ export class DialogOverviewComponent {
     this.dialogRef.close();
   }
 
+  // Function to get the clipboardText from 'data'
   public get clipboardText(): string {
     return this.data["clipboardText"];
   }
 
-  /* To copy any Text */
+  // Callback to copy the text to clipboard
   copyText(val: string){    
     this._snackBar.open('Copied to clipboard', '', {
       duration: 1500

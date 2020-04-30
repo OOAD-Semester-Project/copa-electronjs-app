@@ -22,9 +22,9 @@ export class MobileClipboardCardComponent implements OnInit{
     private httpService: HttpService, 
     ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
+  // Callback to be executed when the user clicks on a clipboard card
   openDialog(data): void {
     const dialogRef = this.dialog.open(DialogOverviewComponent, {
       width: '350px',
@@ -36,6 +36,7 @@ export class MobileClipboardCardComponent implements OnInit{
     });
   }
 
+  // Callback for making a DELETE HTTP request when the user clicks on delete button
   deleteClip(data: ClipboardData): void {
     this.httpService.deleteClip(data).subscribe((resultData: any) => {
       console.log("delete response: ", resultData);

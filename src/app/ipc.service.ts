@@ -1,16 +1,9 @@
-// import { Injectable } from '@angular/core';
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class IpcService {
-
-//   constructor() { }
-// }
-
 import { Injectable } from '@angular/core';
 import { IpcRenderer } from 'electron';
 
+
+// This is a service to send or receive data to/from the electron process.
+// Not being used currently because of the keycloak integration issue with electron.js
 @Injectable({
   providedIn: 'root'
 })

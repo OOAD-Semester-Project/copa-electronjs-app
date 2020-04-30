@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
     private keycloak: KeycloakService) { 
     }
 
+  // Util function to filter the data for desktop and mobile tabs
   addToClipboardArr(data: ClipboardData) {    
     if(data != undefined) {
       let date = new Date(Number(data["timestamp"]));
@@ -46,12 +47,14 @@ export class AppComponent implements OnInit {
     }
   }
 
+  // Callback for copying a selected text when the user presses Ctrl+C keys
   onKeyPress($event: KeyboardEvent) {
     if(($event.ctrlKey || $event.metaKey) && $event.keyCode == 67) {
       this.getSelectionText();
     }              
   }
 
+  // Function to bind the keypress event with the window object
   private bindKeypressEvent(): Observable<KeyboardEvent> {
       const eventsType$ = [
           fromEvent(window, 'keypress'),
@@ -64,6 +67,7 @@ export class AppComponent implements OnInit {
           );
   }
 
+  // Function to get the currently selected text
   getSelectionText(){
     let time = Date.now();
     let selectedText = ""
@@ -86,10 +90,9 @@ export class AppComponent implements OnInit {
     }    
   }
 
+
   ngOnInit(): void {
-
     this.bindKeypressEvent().subscribe(($event: KeyboardEvent) => this.onKeyPress($event));
-
     this.httpService.getAllClips().subscribe((data: any) => {
       console.log(data);      
       data.forEach((d: ClipboardData) => {
@@ -97,7 +100,7 @@ export class AppComponent implements OnInit {
       })      
     });
     
-
+    // Subscriber for the socket message sent by the server whenever there is new data
     this.socketService.getClips().subscribe((data: ClipboardData) => {
       console.log("New data in mobile component: ", data);
       this.clipboardDataArr = [];
@@ -114,6 +117,7 @@ export class AppComponent implements OnInit {
       });
     })
 
+    // Subscriber for the socket message sent by the server when the user deletes a clipboard any of their devices
     this.socketService.listenForNewDataArrived().subscribe((data: ClipboardData) => {
       console.log("New data in mobile component: ", data);
       this.clipboardDataArr = [];

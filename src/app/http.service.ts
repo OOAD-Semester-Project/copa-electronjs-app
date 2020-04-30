@@ -32,31 +32,29 @@ export class HttpService {
 
   private options;
   constructor(private http: HttpClient,
-    // protected keycloakAngular: KeycloakService
     protected keycloak: KeycloakService) {
       
     }
 
+  // Function for making a GET request for getting all clips of a user
   getAllClips() {
     let options = {
       headers: new HttpHeaders()
-        // .set('Authorization',  `Bearer `+this.keycloakAngular.getKeycloakInstance().token)
         .set('Authorization',  `Bearer `+this.keycloak.getToken())
     }
     let decodedToken = jwt_decode(this.keycloak.getToken()); 
     console.log("decoded token: ", decodedToken);
     let userId = decodedToken["preferred_username"];
     let url: string = this.getAllClipsApi+userId;    
-    // console.log(this.keycloakAngular.getKeycloakInstance());
     return this.http.get(url, 
         options
       );
   }
   
+  // Function for making a POST request to add a new clip to the database
   addClip(reqBody: any) {
     let options = {
       headers: new HttpHeaders()
-        // .set('Authorization',  `Bearer `+this.keycloakAngular.getKeycloakInstance().token)
         .set('Authorization',  `Bearer `+this.keycloak.getToken())
     }
     return this.http.post(this.addClipApi, reqBody, 
@@ -64,6 +62,7 @@ export class HttpService {
       );
   }
 
+  // Function to make a HTTP DELETE request to delete a clip from the database
   deleteClip(clipData: ClipboardData) {
     let id = clipData._id;
     let options = {

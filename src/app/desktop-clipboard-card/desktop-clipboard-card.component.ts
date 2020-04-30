@@ -28,6 +28,7 @@ export class DesktopClipboardCardComponent implements OnInit{
     
   }
   
+  // Callback to be executed when the user clicks on a clipboard card
   openDialog(data): void {    
     const dialogRef = this.dialog.open(DialogOverviewComponent, {
       width: '550px',
@@ -40,6 +41,7 @@ export class DesktopClipboardCardComponent implements OnInit{
 
   }
   
+  // Callback to make a DELETE HTTP request when user clicks delete button
   deleteClip(data: ClipboardData): void {
     this.httpService.deleteClip(data).subscribe((resultData: any) => {
       console.log("delete response: ", resultData);

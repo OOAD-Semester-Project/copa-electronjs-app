@@ -1,35 +1,16 @@
+// Not using this file as of now because of the Keycloak integration issue with electron.js
+
 // // In this file you can include the rest of your app's specific main process
 // // code. You can also put them in separate files and require them here.
 
 
 const { clipboard, ipcMain} = require('electron')
 const {app, BrowserWindow} = require('electron')
-// let http = require('http');
-// let fs = require('fs');
-// var static = require('node-static');
-// var file = new static.Server(`${__dirname}/public`)
-
-// const Keycloak = http.createServer((request, response) => {
-//   console.log("__dirname", __dirname);
-//   response.writeHeader(200, {"Content-Type": "text/html"});
-  
-//   // var readSream = fs.createReadStream(__dirname + '/src/index.html','utf8')
-//   // readSream.pipe(response);
-
-//   response.sendFile(__dirname + '/src/index.html');
-// });
-// Keycloak.listen(3010);
 
 ipcMain.on('newData', (data) => {
   console.log("newData event happened");
   clipboard.writeText(data["clipboardText"]);
 });
-
-// ipcMain.on('keycloak-token', (event, token) => {
-//   console.log("token: ", token);
-//   const winURL = `http://copa-keycloak.herokuapp.com?token=${token}`;
-//   mainWindow.loadURL(winURL);
-// });
 
 const url = require("url");
 const path = require("path");
@@ -45,7 +26,7 @@ function createWindow () {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false
+      // webSecurity: false
     },
     // show: false
   })
@@ -82,18 +63,18 @@ function createWindow () {
         body: clipboardData
       }
 
-      // const request = net.request(options);      
-      // request.on('response', (response) => {
-      //   console.log(`STATUS: ${response.statusCode}`)
-      //   console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
-      //   response.on('data', (chunk) => {
-      //     console.log(`BODY: ${chunk}`)
-      //   })
-      //   response.on('end', () => {
-      //     console.log('No more data in response.')
-      //   })
-      // })
-      // request.end();
+      const request = net.request(options);      
+      request.on('response', (response) => {
+        console.log(`STATUS: ${response.statusCode}`)
+        console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
+        response.on('data', (chunk) => {
+          console.log(`BODY: ${chunk}`)
+        })
+        response.on('end', () => {
+          console.log('No more data in response.')
+        })
+      })
+      request.end();
       
     } else {
       previousText = text;

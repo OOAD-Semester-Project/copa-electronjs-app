@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { IpcService } from './ipc.service';
 declare var Keycloak: any;
 
+// This class is for keycloak service which has APIs for authenticating users
 @Injectable({
   providedIn: 'root'
 })
@@ -27,10 +27,13 @@ export class KeycloakService {
         });
       });
   }
+
+  // get the access token
   getToken(): string {
     return this.keycloakAuth.token;
   }
 
+  // Perform the logout operation
   logout(): void {
     return this.keycloakAuth.logout();
   }
