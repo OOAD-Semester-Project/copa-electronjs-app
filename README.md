@@ -6,7 +6,7 @@ We have built a solution for synchronizing the clipboard content (any copied tex
 
 This is the GitHub repository for the webapp of the Clipboard Synchronization project, developed using Angular. If you want to take a quick look at this app, it is already deployed [here](https://clipboard-sync-angular-app.appspot.com/). It requires users to enter the credentials to login!
 
-For a full list of features and architecture description, please refer to this [README.md](https://github.com/OOAD-Semester-Project/android-app/blob/master/README.md) document.
+**For a full list of features and architecture description, please refer to this [README.md](https://github.com/OOAD-Semester-Project/android-app/blob/master/README.md) document.**
 
 Prerequisites
 ----
